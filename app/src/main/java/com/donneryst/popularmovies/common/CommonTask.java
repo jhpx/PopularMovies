@@ -1,11 +1,10 @@
-package com.donneryst.popularmovies;
+package com.donneryst.popularmovies.common;
 
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.donneryst.popularmovies.common.AsyncTaskResult;
-import com.donneryst.popularmovies.common.CommonTask;
+import com.donneryst.popularmovies.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,9 +14,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by jhpx on 2015/11/22.
+ * Created by jhpx on 2015/11/23.
  */
-public class FetchDiscoveryTask extends CommonTask {
+public class CommonTask extends AsyncTask<Uri, Void, AsyncTaskResult<String>> {
+
+    protected final String LOG_TAG = this.getClass().getSimpleName();
+
+    public CommonTask() {
+        super();
+    }
 
     @Override
     protected AsyncTaskResult<String> doInBackground(Uri... params) {
@@ -25,7 +30,6 @@ public class FetchDiscoveryTask extends CommonTask {
         if (params.length == 0) {
             return null;
         }
-
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -102,8 +106,7 @@ public class FetchDiscoveryTask extends CommonTask {
     }
 
     @Override
-    protected void onPostExecute(AsyncTaskResult<String> s) {
-        super.onPostExecute(s);
+    protected void onPostExecute(AsyncTaskResult<String> stringAsyncTaskResult) {
+        super.onPostExecute(stringAsyncTaskResult);
     }
 }
-

@@ -2,9 +2,6 @@ package com.donneryst.popularmovies.utils;
 
 import android.net.Uri;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,7 +10,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -23,29 +19,47 @@ import java.util.Map;
 public class HttpUtils {
 
     /**
-     * Build Post Parameters
+     * Build Get/Post Uri
      *
-     * @param content
+     * @param url
+     * @param params
      * @return
      */
-    public static String buildPostParameters(Object content) {
-        String output = null;
-        if ((content instanceof String) ||
-                (content instanceof JSONObject) ||
-                (content instanceof JSONArray)) {
-            output = content.toString();
-        } else if (content instanceof Map) {
-            Uri.Builder builder = new Uri.Builder();
-            Map map = (Map) content;
-            if (map != null) {
-                Iterator entries = map.entrySet().iterator();
-                while (entries.hasNext()) {
-                    Map.Entry entry = (Map.Entry) entries.next();
-                    builder.appendQueryParameter(entry.getKey().toString(), entry.getValue().toString());
-                    entries.remove(); // avoids a ConcurrentModificationException
-                }
-                output = builder.build().getEncodedQuery();
+    public static Uri buildUri(String url, Map params) {
+        Uri output = null;
+        Uri.Builder builder = Uri.parse(url).buildUpon();
+
+        if (params != null) {
+            Iterator entries = params.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry entry = (Map.Entry) entries.next();
+                builder.appendQueryParameter(entry.getKey().toString(), entry.getValue().toString());
+                entries.remove(); // avoids a ConcurrentModificationException
             }
+            output = builder.build();
+        }
+
+        return output;
+    }
+
+    /**
+     * Build Post Parameters
+     *
+     * @param params
+     * @return
+     */
+    public static String buildPostParameters(Map params) {
+        String output = null;
+        Uri.Builder builder = new Uri.Builder();
+
+        if (params != null) {
+            Iterator entries = params.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry entry = (Map.Entry) entries.next();
+                builder.appendQueryParameter(entry.getKey().toString(), entry.getValue().toString());
+                entries.remove(); // avoids a ConcurrentModificationException
+            }
+            output = builder.build().getEncodedQuery();
         }
 
         return output;
