@@ -8,14 +8,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.donneryst.popularmovies.constants.URLs;
+import com.donneryst.popularmovies.model.Movie;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
  * Created by jhpx on 2015/11/22.
  */
 public class MovieAdapter extends ArrayAdapter<Movie>{
-
-
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
 
     /**
@@ -58,12 +60,11 @@ public class MovieAdapter extends ArrayAdapter<Movie>{
                     R.layout.grid_item_movie, parent, false);
         }
 
-        ImageView iconView = (ImageView) convertView.findViewById(R.id.movie_image);
-        iconView.setImageResource(movie.image);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.movie_image);
+        Picasso.with(getContext()).load(URLs.POSTER_BASE_URL+movie.getPoster_path()).into(imageView);
 
         TextView versionNameView = (TextView) convertView.findViewById(R.id.movie_text);
-        versionNameView.setText(movie.versionName
-                + " - " + movie.versionNumber);
+        versionNameView.setText(movie.getTitle());
 
         return convertView;
     }

@@ -1,17 +1,22 @@
 package com.donneryst.popularmovies.utils;
 
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
+
 
 /**
  * Created by jhpx on 2015/11/22.
@@ -70,14 +75,15 @@ public class HttpUtils {
      *
      * @param method
      * @param apiAddress
-     * @param mimeType
+     * @param contentType
      * @param requestBody
      * @return
      * @throws IOException
      */
 
-    public static URLConnection makeRequest(String method, String apiAddress, String mimeType, String requestBody) throws IOException {
+    public static HttpURLConnection makeRequest(String method, String apiAddress, String contentType, String requestBody) throws IOException {
         URL url = new URL(apiAddress);
+        Log.d("Test", url.toString());
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
         urlConnection.setDoInput(true);
@@ -85,16 +91,121 @@ public class HttpUtils {
         urlConnection.setRequestMethod(method);
 
         //urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-        urlConnection.setRequestProperty("Content-Type", mimeType);
-        OutputStream outputStream = new BufferedOutputStream(urlConnection.getOutputStream());
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "utf-8"));
-        writer.write(requestBody);
-        writer.flush();
-        writer.close();
-        outputStream.close();
+        if (contentType != null)
+            urlConnection.setRequestProperty("Content-Type", contentType);
+
+        if (requestBody != null && requestBody.length() > 0) {
+            OutputStream outputStream = new BufferedOutputStream(urlConnection.getOutputStream());
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "utf-8"));
+            writer.write(requestBody);
+            writer.flush();
+            writer.close();
+            outputStream.close();
+        }
 
         urlConnection.connect();
 
         return urlConnection;
     }
+
+
+    /**
+     * Make http connection and get response in byte array format
+     *
+     * @param uri
+     * @param method
+     * @param LOG_TAG
+     * @return
+     * @throws Exception
+     */
+    public static byte[] getConnectionResponse(Uri uri, String method, final String LOG_TAG) throws Exception {
+
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+        byte[] result = null;
+
+        try {
+            // Catch apiAddress and requestBody from Uri
+            final String address = uri.getScheme() + "://" + uri.getAuthority() + uri.getPath();
+            final String query = uri.getQuery();
+            if (method.equals("GET"))
+                urlConnection = makeRequest(method, uri.toString(), null, null);
+            else
+                urlConnection = makeRequest(method, address, null, query);
+
+
+            int responseCode = urlConnection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Read the input stream into a String
+                InputStream inputStream = urlConnection.getInputStream();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+
+                return readFully(inputStream, -1, true);
+            } else {
+                Log.e(LOG_TAG, "Error code:" + responseCode);
+                return null;
+            }
+        } catch (Exception e) {
+            // If the code didn't successfully get the weather data, there's no point in attemping
+            // to parse it.
+            Log.e(LOG_TAG, Log.getStackTraceString(e));
+            throw e;
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (final IOException e) {
+                    Log.e(LOG_TAG, "Error closing stream", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * This snippet is taken from the sun.misc.IOUtils class. It's nearly twice as fast as the common implementation using ByteBuffers:
+     *
+     * @param is
+     * @param length
+     * @param readAll
+     * @return
+     * @throws IOException
+     */
+    private static byte[] readFully(InputStream is, int length, boolean readAll)
+            throws IOException {
+        byte[] output = {};
+        if (length == -1) length = Integer.MAX_VALUE;
+        int pos = 0;
+        while (pos < length) {
+            int bytesToRead;
+            if (pos >= output.length) { // Only expand when there's no room
+                bytesToRead = Math.min(length - pos, output.length + 1024);
+                if (output.length < pos + bytesToRead) {
+                    output = Arrays.copyOf(output, pos + bytesToRead);
+                }
+            } else {
+                bytesToRead = output.length - pos;
+            }
+            int cc = is.read(output, pos, bytesToRead);
+            if (cc < 0) {
+                if (readAll && length != Integer.MAX_VALUE) {
+                    throw new EOFException("Detect premature EOF");
+                } else {
+                    if (output.length != pos) {
+                        output = Arrays.copyOf(output, pos);
+                    }
+                    break;
+                }
+            }
+            pos += cc;
+        }
+        return output;
+    }
+
+
 }

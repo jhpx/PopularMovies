@@ -1,27 +1,34 @@
 package com.donneryst.popularmovies;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
+
+import com.donneryst.popularmovies.common.AsyncTaskListener;
+import com.donneryst.popularmovies.model.Movie;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainDiscoveryFragment extends Fragment {
+public class MainDiscoveryFragment extends Fragment implements AsyncTaskListener<List<Movie>> {
+
+    protected final String LOG_TAG = MainDiscoveryFragment.class.getSimpleName();
 
     private MovieAdapter mMovieAdapter;
+
+    private FetchDiscoveryTask task;
+
 
     public MainDiscoveryFragment() {
     }
@@ -58,28 +65,54 @@ public class MainDiscoveryFragment extends Fragment {
 
 
         // Create some dummy data.
-        Movie[] movies = {
-                new Movie("Cupcake", "1.5", R.drawable.loading),
-                new Movie("Donut", "1.6", R.drawable.loading),
-                new Movie("Eclair", "2.0-2.1", R.drawable.loading),
-                new Movie("Froyo", "2.2-2.2.3", R.drawable.loading),
-                new Movie("GingerBread", "2.3-2.3.7", R.drawable.loading),
-                new Movie("Honeycomb", "3.0-3.2.6", R.drawable.loading),
-                new Movie("Ice Cream Sandwich", "4.0-4.0.4", R.drawable.loading),
-                new Movie("Jelly Bean", "4.1-4.3.1", R.drawable.loading),
-                new Movie("KitKat", "4.4-4.4.4", R.drawable.loading),
-                new Movie("Lollipop", "5.0-5.1.1", R.drawable.loading)
-        };
+        List<Movie> movies = new ArrayList<>();
 
         // Now that we have some dummy forecast data, create an ArrayAdapter.
         // The ArrayAdapter will take data from a source (like our dummy forecast) and
         // use it to populate the ListView it's attached to.
-        mMovieAdapter = new MovieAdapter(getActivity(), Arrays.asList(movies));
+        mMovieAdapter = new MovieAdapter(getActivity(), movies);
 
         // Get a reference to the ListView, and attach this adapter to it.
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
         gridView.setAdapter(mMovieAdapter);
 
         return rootView;
+    }
+
+    private void pullMovieDiscovery() {
+        task = new FetchDiscoveryTask(this);
+        task.execute();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        pullMovieDiscovery();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (task != null) {
+            task.setListener(null); //prevent leaking this Fragment
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onError(Exception e) {
+        Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSuccess(List<Movie> result) {
+        mMovieAdapter.clear();
+        for (Movie mov: result) {
+            mMovieAdapter.add(mov);
+        }
+    }
+
+    @Override
+    public void onFinally() {
+        task = null; //prevents task from being leaked
     }
 }
