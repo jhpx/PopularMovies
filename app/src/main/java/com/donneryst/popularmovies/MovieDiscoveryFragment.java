@@ -1,5 +1,6 @@
 package com.donneryst.popularmovies;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -21,16 +23,16 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainDiscoveryFragment extends Fragment implements AsyncTaskListener<List<Movie>> {
+public class MovieDiscoveryFragment extends Fragment implements AsyncTaskListener<List<Movie>> {
 
-    protected final String LOG_TAG = MainDiscoveryFragment.class.getSimpleName();
+    protected final String LOG_TAG = MovieDiscoveryFragment.class.getSimpleName();
 
     private MovieAdapter mMovieAdapter;
 
     private FetchDiscoveryTask task;
 
 
-    public MainDiscoveryFragment() {
+    public MovieDiscoveryFragment() {
     }
 
     @Override
@@ -75,6 +77,15 @@ public class MainDiscoveryFragment extends Fragment implements AsyncTaskListener
         // Get a reference to the ListView, and attach this adapter to it.
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
         gridView.setAdapter(mMovieAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Movie movie = mMovieAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra("MOVIE", movie);
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }
