@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.donneryst.popularmovies.model.Movie;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -23,9 +25,7 @@ public class MovieDetailFragment extends Fragment {
         // The detail Activity called via intent.  Inspect the intent for forecast data.
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra("MOVIE")) {
-//            mForecastStr = intent.getStringExtra("MOVIE");
-//            ((TextView) rootView.findViewById(R.id.detail_text))
-//                    .setText(mForecastStr);
+            Movie movie = intent.getParcelableExtra("MOVIE");
         }
         return  rootView;
     }

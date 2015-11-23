@@ -55,6 +55,7 @@ public class MovieDiscoveryFragment extends Fragment implements AsyncTaskListene
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
+            pullMovieDiscovery();
             return true;
         }
         return super.onOptionsItemSelected(item);
