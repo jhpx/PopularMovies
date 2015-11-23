@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.donneryst.popularmovies.constants.URLs;
 import com.donneryst.popularmovies.model.Movie;
@@ -62,9 +61,6 @@ public class MovieAdapter extends ArrayAdapter<Movie>{
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.movie_image);
         Picasso.with(getContext()).load(URLs.POSTER_BASE_URL+movie.getPoster_path()).into(imageView);
-
-        TextView versionNameView = (TextView) convertView.findViewById(R.id.movie_text);
-        versionNameView.setText(movie.getTitle());
 
         return convertView;
     }

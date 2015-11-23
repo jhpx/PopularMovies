@@ -83,7 +83,6 @@ public class HttpUtils {
 
     public static HttpURLConnection makeRequest(String method, String apiAddress, String contentType, String requestBody) throws IOException {
         URL url = new URL(apiAddress);
-        Log.d("Test", url.toString());
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
         urlConnection.setDoInput(true);
@@ -119,12 +118,12 @@ public class HttpUtils {
      * @throws Exception
      */
     public static byte[] getConnectionResponse(Uri uri, String method, final String LOG_TAG) throws Exception {
-
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         byte[] result = null;
 
         try {
+            Log.d(LOG_TAG,uri.toString());
             // Catch apiAddress and requestBody from Uri
             final String address = uri.getScheme() + "://" + uri.getAuthority() + uri.getPath();
             final String query = uri.getQuery();
