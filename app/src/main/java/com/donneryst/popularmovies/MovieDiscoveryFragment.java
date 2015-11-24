@@ -1,6 +1,5 @@
 package com.donneryst.popularmovies;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,9 +30,6 @@ public class MovieDiscoveryFragment extends Fragment implements AsyncTaskListene
 
     private FetchDiscoveryTask task;
 
-
-    public MovieDiscoveryFragment() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,9 +78,7 @@ public class MovieDiscoveryFragment extends Fragment implements AsyncTaskListene
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Movie movie = mMovieAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra("MOVIE", movie);
-                startActivity(intent);
+                MovieDetailActivity.startActivity(getActivity(),movie);
             }
         });
 
@@ -92,7 +86,7 @@ public class MovieDiscoveryFragment extends Fragment implements AsyncTaskListene
     }
 
     private void pullMovieDiscovery() {
-        task = new FetchDiscoveryTask(this);
+        task = new FetchDiscoveryTask(getContext(),this);
         task.execute();
     }
 

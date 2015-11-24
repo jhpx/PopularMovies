@@ -36,6 +36,10 @@ public class Movie implements Parcelable {
         return poster_path;
     }
 
+    public String getOriginal_title() {
+        return original_title;
+    }
+
     @Override
     public int describeContents() {
         return 0;

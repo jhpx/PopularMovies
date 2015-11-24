@@ -1,9 +1,9 @@
 package com.donneryst.popularmovies.common;
 
-public interface AsyncTaskListener<TResult> {
+public interface AsyncTaskListener<Result> {
     void onError(Exception e);
 
-    void onSuccess(TResult result);
+    void onSuccess(Result result);
 
     void onFinally();
 }

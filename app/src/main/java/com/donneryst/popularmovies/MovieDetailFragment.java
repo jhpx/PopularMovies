@@ -3,6 +3,7 @@ package com.donneryst.popularmovies;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,8 @@ import com.donneryst.popularmovies.model.Movie;
  */
 public class MovieDetailFragment extends Fragment {
 
-    public MovieDetailFragment() {
-    }
+    protected final String LOG_TAG = MovieDetailFragment.class.getSimpleName();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -24,8 +25,10 @@ public class MovieDetailFragment extends Fragment {
 
         // The detail Activity called via intent.  Inspect the intent for forecast data.
         Intent intent = getActivity().getIntent();
-        if (intent != null && intent.hasExtra("MOVIE")) {
-            Movie movie = intent.getParcelableExtra("MOVIE");
+        if (intent != null && intent.hasExtra(MovieDetailActivity.EXTRA_MOVIE)) {
+            Movie movie = intent.getParcelableExtra(MovieDetailActivity.EXTRA_MOVIE);
+            Log.e(LOG_TAG,movie.getTitle());
+            Log.e(LOG_TAG,movie.getOriginal_title());
         }
         return  rootView;
     }
