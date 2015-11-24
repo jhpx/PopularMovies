@@ -8,11 +8,13 @@ import android.util.Log;
 
 import com.donneryst.popularmovies.common.AsyncTaskListener;
 import com.donneryst.popularmovies.common.CommonHttpTask;
+import com.donneryst.popularmovies.constants.LanguageCodes;
 import com.donneryst.popularmovies.constants.URLs;
 import com.donneryst.popularmovies.model.Movie;
 import com.donneryst.popularmovies.utils.HttpUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.neovisionaries.i18n.LanguageCode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +22,7 @@ import org.json.JSONTokener;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by jhpx on 2015/11/22.
@@ -52,7 +55,10 @@ public class FetchDiscoveryTask extends CommonHttpTask<Void, Void, List<Movie>> 
                 mContext.getString(R.string.pref_sort_by_key),
                 mContext.getString(R.string.pref_sort_by_popularity_desc));
         String language = sharedPrefs.getString(
-                mContext.getString(R.string.pref_movie_language_key), "zh");
+                mContext.getString(R.string.pref_movie_language_key), Locale.getDefault().getLanguage());
+        // When default language is not supported, set it to English
+        if (LanguageCode.getByCode(language) == null)
+            language = "en";
 
         Uri builtUri = Uri.parse(THEMOVIEDB_BASE_URL).buildUpon()
                 .appendQueryParameter(SORT_PARAM, sort_by_method)

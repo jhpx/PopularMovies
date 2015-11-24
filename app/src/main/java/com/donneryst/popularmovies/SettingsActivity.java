@@ -23,6 +23,8 @@ import android.view.MenuItem;
 import com.donneryst.popularmovies.common.AppCompatPreferenceActivity;
 import com.donneryst.popularmovies.constants.LanguageCodes;
 
+import java.util.Locale;
+
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
@@ -182,12 +184,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 
             ListPreference languagePreference = (ListPreference) findPreference(getString(R.string.pref_movie_language_key));
-
             languagePreference.setEntries(LanguageCodes.ALL_LANGUAGE_NAMES);
             languagePreference.setEntryValues(LanguageCodes.ALL_LANGUAGE_CODES);
-            languagePreference.setDefaultValue("zh");
-
             bindPreferenceSummaryToValue(languagePreference);
+
+            //Set defaultValue manually
+            if(languagePreference.getValue() == null) {
+                languagePreference.setValue(Locale.getDefault().getLanguage());
+                languagePreference.setSummary(Locale.getDefault().getDisplayLanguage());
+            }
         }
 
     }

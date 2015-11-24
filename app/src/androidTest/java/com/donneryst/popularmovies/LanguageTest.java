@@ -6,6 +6,8 @@ import com.neovisionaries.i18n.LanguageCode;
 
 import junit.framework.TestCase;
 
+import java.util.Locale;
+
 /**
  * Created by jhpx on 2015/11/23.
  */
@@ -19,6 +21,6 @@ public class LanguageTest extends TestCase {
             System.out.format("[%s] %s\n", code, code.getName());
         }
 
-
+        Locale.getISOLanguages();
     }
 }
