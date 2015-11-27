@@ -1,4 +1,4 @@
-package com.donneryst.popularmovies;
+package com.donneryst.popularmovies.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,10 +6,9 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.donneryst.popularmovies.common.AsyncTaskListener;
-import com.donneryst.popularmovies.common.CommonHttpTask;
-import com.donneryst.popularmovies.constants.LanguageCodes;
-import com.donneryst.popularmovies.constants.URLs;
+import com.donneryst.popularmovies.BuildConfig;
+import com.donneryst.popularmovies.R;
+import com.donneryst.popularmovies.URLs;
 import com.donneryst.popularmovies.model.Movie;
 import com.donneryst.popularmovies.utils.HttpUtils;
 import com.google.gson.Gson;

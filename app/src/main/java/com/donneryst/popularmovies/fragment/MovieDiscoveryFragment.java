@@ -1,4 +1,4 @@
-package com.donneryst.popularmovies;
+package com.donneryst.popularmovies.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,8 +13,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.donneryst.popularmovies.common.AsyncTaskListener;
+import com.donneryst.popularmovies.R;
+import com.donneryst.popularmovies.activity.MovieDetailActivity;
+import com.donneryst.popularmovies.adapter.MovieAdapter;
+import com.donneryst.popularmovies.network.AsyncTaskListener;
 import com.donneryst.popularmovies.model.Movie;
+import com.donneryst.popularmovies.network.FetchDiscoveryTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +82,7 @@ public class MovieDiscoveryFragment extends Fragment implements AsyncTaskListene
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Movie movie = mMovieAdapter.getItem(position);
-                MovieDetailActivity.startActivity(getActivity(),movie);
+                MovieDetailActivity.startActivity(getActivity(), movie);
             }
         });
 

@@ -1,4 +1,4 @@
-package com.donneryst.popularmovies;
+package com.donneryst.popularmovies.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,11 +6,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.donneryst.popularmovies.R;
 import com.donneryst.popularmovies.model.Movie;
 
 public class MovieDetailActivity extends AppCompatActivity {
-
-    static final String EXTRA_MOVIE = "com.donneryst.popularmovies.model.movie";
 
     /**
      * Provide this method as an interface for anyone who want to start this Activity
@@ -19,7 +18,7 @@ public class MovieDetailActivity extends AppCompatActivity {
      */
     public static void startActivity(Context context, Movie movie) {
         Intent intent = new Intent(context, MovieDetailActivity.class);
-        intent.putExtra(EXTRA_MOVIE, movie);
+        intent.putExtra(Movie.class.getName(), movie);
         context.startActivity(intent);
     }
 

@@ -1,4 +1,4 @@
-package com.donneryst.popularmovies.common;
+package com.donneryst.popularmovies.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

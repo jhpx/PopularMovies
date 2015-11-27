@@ -1,4 +1,4 @@
-package com.donneryst.popularmovies;
+package com.donneryst.popularmovies.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.donneryst.popularmovies.constants.URLs;
+import com.donneryst.popularmovies.R;
+import com.donneryst.popularmovies.URLs;
 import com.donneryst.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 

@@ -1,4 +1,4 @@
-package com.donneryst.popularmovies.common;
+package com.donneryst.popularmovies.network;
 
 public interface AsyncTaskListener<Result> {
     void onError(Exception e);

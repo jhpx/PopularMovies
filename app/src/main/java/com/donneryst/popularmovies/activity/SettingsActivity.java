@@ -1,4 +1,4 @@
-package com.donneryst.popularmovies;
+package com.donneryst.popularmovies.activity;
 
 
 import android.annotation.TargetApi;
@@ -20,8 +20,8 @@ import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import com.donneryst.popularmovies.common.AppCompatPreferenceActivity;
-import com.donneryst.popularmovies.constants.LanguageCodes;
+import com.donneryst.popularmovies.R;
+import com.donneryst.popularmovies.utils.LanguageCodes;
 
 import java.util.Locale;
 

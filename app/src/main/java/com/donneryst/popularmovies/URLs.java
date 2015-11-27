@@ -1,4 +1,4 @@
-package com.donneryst.popularmovies.constants;
+package com.donneryst.popularmovies;
 
 /**
  * Created by jhpx on 2015/11/23.

@@ -1,4 +1,4 @@
-package com.donneryst.popularmovies.common;
+package com.donneryst.popularmovies.network;
 
 import android.os.AsyncTask;
 import android.util.Log;

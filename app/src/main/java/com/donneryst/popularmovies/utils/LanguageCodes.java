@@ -1,4 +1,4 @@
-package com.donneryst.popularmovies.constants;
+package com.donneryst.popularmovies.utils;
 
 import com.neovisionaries.i18n.LanguageCode;
 
