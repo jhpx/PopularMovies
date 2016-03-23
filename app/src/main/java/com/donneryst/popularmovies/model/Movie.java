@@ -7,6 +7,9 @@ import java.util.Arrays;
 
 /**
  * Movie Bean for TheMovieDB
+ *
+ * Author: jhpx
+ * Create: 2015/11/24
  */
 public class Movie implements Parcelable {
     boolean adult;

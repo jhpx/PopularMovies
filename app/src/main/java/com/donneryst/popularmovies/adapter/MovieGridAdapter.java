@@ -15,20 +15,20 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
+ * This adapter is used for a grid component which controls data and reusing view holders.
  * Created by jhpx on 2015/11/22.
  */
-public class MovieAdapter extends ArrayAdapter<Movie>{
-    private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
+public class MovieGridAdapter extends ArrayAdapter<Movie> {
 
     /**
      * This is our own custom constructor (it doesn't mirror a superclass constructor).
      * The context is used to inflate the layout file, and the List is the data we want
      * to populate into the lists
      *
-     * @param context        The current context. Used to inflate the layout file.
-     * @param movies A List of Movie objects to display in a list
+     * @param context The current context. Used to inflate the layout file.
+     * @param movies  A List of Movie objects to display in a list
      */
-    public MovieAdapter(Activity context, List<Movie> movies) {
+    public MovieGridAdapter(Activity context, List<Movie> movies) {
         // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
         // the second argument is used when the ArrayAdapter is populating a single TextView.
         // Because this is a custom adapter for two TextViews and an ImageView, the adapter is not
@@ -43,7 +43,7 @@ public class MovieAdapter extends ArrayAdapter<Movie>{
      * @param position    The AdapterView position that is requesting a view
      * @param convertView The recycled view to populate.
      *                    (search online for "android view recycling" to learn more)
-     * @param parent The parent ViewGroup that is used for inflation.
+     * @param parent      The parent ViewGroup that is used for inflation.
      * @return The View for the position in the AdapterView.
      */
     @Override
@@ -61,7 +61,7 @@ public class MovieAdapter extends ArrayAdapter<Movie>{
         }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.movie_image);
-        Picasso.with(getContext()).load(URLs.POSTER_BASE_URL+movie.getPoster_path()).into(imageView);
+        Picasso.with(getContext()).load(URLs.POSTER_BASE_URL + movie.getPoster_path()).into(imageView);
 
         return convertView;
     }

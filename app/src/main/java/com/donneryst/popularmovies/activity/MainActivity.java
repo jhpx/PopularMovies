@@ -7,13 +7,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.donneryst.popularmovies.R;
+import com.orhanobut.logger.Logger;
 
+/**
+ * The main activity is used for loading fragments depends on device's size.
+ * It adds a detail fragment if detects a device as tablet.
+ * Because fragments don't talk to each other, the activity works as handler for control and transfer data for selected movie from the movie fragment to the detail fragment.
+ *
+ * Created by jhpx on 2015/11/22.
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize Logger
+        Logger.init();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }

@@ -9,6 +9,12 @@ import android.support.v7.widget.Toolbar;
 import com.donneryst.popularmovies.R;
 import com.donneryst.popularmovies.model.Movie;
 
+/**
+ *
+ * The activity is used for setting a detail fragment and showing movie detail data.
+ *
+ * Created by jhpx on 2015/11/22.
+ */
 public class MovieDetailActivity extends AppCompatActivity {
 
     /**

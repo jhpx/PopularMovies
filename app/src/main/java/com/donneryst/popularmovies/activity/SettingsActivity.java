@@ -21,11 +21,13 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.donneryst.popularmovies.R;
-import com.donneryst.popularmovies.utils.LanguageCodes;
+import com.neovisionaries.i18n.LanguageCode;
 
 import java.util.Locale;
 
 /**
+ * The activity is used to modify application settings
+ *
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
  * settings are split by category, with category headers shown to the left of
@@ -37,6 +39,18 @@ import java.util.Locale;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
+    public static final CharSequence[] ALL_LANGUAGE_CODES;
+    public static final CharSequence[] ALL_LANGUAGE_NAMES;
+
+    static {
+        // LanguageCode.values()[0] is undefined, skip this
+        ALL_LANGUAGE_CODES = new CharSequence[LanguageCode.values().length - 1];
+        ALL_LANGUAGE_NAMES = new CharSequence[LanguageCode.values().length - 1];
+        for (int i = 1; i < LanguageCode.values().length; i++) {
+            ALL_LANGUAGE_CODES[i - 1] = LanguageCode.values()[i].toString();
+            ALL_LANGUAGE_NAMES[i - 1] = LanguageCode.values()[i].getName();
+        }
+    }
 
     /**
      * Provide this method as an interface for anyone who want to start this Activity
@@ -184,12 +198,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 
             ListPreference languagePreference = (ListPreference) findPreference(getString(R.string.pref_movie_language_key));
-            languagePreference.setEntries(LanguageCodes.ALL_LANGUAGE_NAMES);
-            languagePreference.setEntryValues(LanguageCodes.ALL_LANGUAGE_CODES);
+            languagePreference.setEntries(ALL_LANGUAGE_NAMES);
+            languagePreference.setEntryValues(ALL_LANGUAGE_CODES);
             bindPreferenceSummaryToValue(languagePreference);
 
             //Set defaultValue manually
-            if(languagePreference.getValue() == null) {
+            if (languagePreference.getValue() == null) {
                 languagePreference.setValue(Locale.getDefault().getLanguage());
                 languagePreference.setSummary(Locale.getDefault().getDisplayLanguage());
             }

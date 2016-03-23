@@ -1,7 +1,6 @@
-package com.donneryst.popularmovies.utils;
+package com.donneryst.popularmovies.util;
 
 import android.net.Uri;
-import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -19,9 +18,11 @@ import java.util.Map;
 
 
 /**
+ * Some Utils about HTTP
+ *
  * Created by jhpx on 2015/11/22.
  */
-public class HttpUtils {
+public class HttpUtil {
 
     /**
      * Build Get/Post Uri
@@ -113,17 +114,14 @@ public class HttpUtils {
      *
      * @param uri
      * @param method
-     * @param LOG_TAG
      * @return
      * @throws Exception
      */
-    public static byte[] getConnectionResponse(Uri uri, String method, final String LOG_TAG) throws Exception {
+    public static byte[] getConnectionResponse(Uri uri, String method) throws Exception {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-        byte[] result = null;
 
         try {
-            Log.d(LOG_TAG,uri.toString());
             // Catch apiAddress and requestBody from Uri
             final String address = uri.getScheme() + "://" + uri.getAuthority() + uri.getPath();
             final String query = uri.getQuery();
@@ -144,24 +142,16 @@ public class HttpUtils {
 
                 return readFully(inputStream, -1, true);
             } else {
-                Log.e(LOG_TAG, "Error code:" + responseCode);
-                return null;
+                throw new IOException("Http Status " + responseCode);
             }
         } catch (Exception e) {
-            // If the code didn't successfully get the weather data, there's no point in attemping
-            // to parse it.
-            Log.e(LOG_TAG, Log.getStackTraceString(e));
             throw e;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
             if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
-                }
+                reader.close();
             }
         }
     }

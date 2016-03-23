@@ -15,10 +15,11 @@ import android.widget.Toast;
 
 import com.donneryst.popularmovies.R;
 import com.donneryst.popularmovies.activity.MovieDetailActivity;
-import com.donneryst.popularmovies.adapter.MovieAdapter;
-import com.donneryst.popularmovies.network.AsyncTaskListener;
+import com.donneryst.popularmovies.adapter.MovieGridAdapter;
 import com.donneryst.popularmovies.model.Movie;
-import com.donneryst.popularmovies.network.FetchDiscoveryTask;
+import com.donneryst.popularmovies.model.Result;
+import com.donneryst.popularmovies.network.CommonHttpTask;
+import com.donneryst.popularmovies.network.FetchMoviesTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +27,11 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MovieDiscoveryFragment extends Fragment implements AsyncTaskListener<List<Movie>> {
+public class MovieGridFragment extends Fragment implements CommonHttpTask.AsyncTaskListener<Result<Movie>> {
 
-    protected final String LOG_TAG = MovieDiscoveryFragment.class.getSimpleName();
+    private MovieGridAdapter mMovieGridAdapter;
 
-    private MovieAdapter mMovieAdapter;
-
-    private FetchDiscoveryTask task;
+    private FetchMoviesTask task;
 
 
     @Override
@@ -73,15 +72,15 @@ public class MovieDiscoveryFragment extends Fragment implements AsyncTaskListene
         // Now that we have some dummy forecast data, create an ArrayAdapter.
         // The ArrayAdapter will take data from a source (like our dummy forecast) and
         // use it to populate the ListView it's attached to.
-        mMovieAdapter = new MovieAdapter(getActivity(), movies);
+        mMovieGridAdapter = new MovieGridAdapter(getActivity(), movies);
 
         // Get a reference to the ListView, and attach this adapter to it.
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
-        gridView.setAdapter(mMovieAdapter);
+        gridView.setAdapter(mMovieGridAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Movie movie = mMovieAdapter.getItem(position);
+                Movie movie = mMovieGridAdapter.getItem(position);
                 MovieDetailActivity.startActivity(getActivity(), movie);
             }
         });
@@ -90,7 +89,7 @@ public class MovieDiscoveryFragment extends Fragment implements AsyncTaskListene
     }
 
     private void pullMovieDiscovery() {
-        task = new FetchDiscoveryTask(getContext(),this);
+        task = new FetchMoviesTask(getContext(),this);
         task.execute();
     }
 
@@ -114,10 +113,11 @@ public class MovieDiscoveryFragment extends Fragment implements AsyncTaskListene
     }
 
     @Override
-    public void onSuccess(List<Movie> result) {
-        mMovieAdapter.clear();
-        for (Movie mov: result) {
-            mMovieAdapter.add(mov);
+    public void onSuccess(Result<Movie> result) {
+        mMovieGridAdapter.clear();
+        if (result!=null)
+        for (Movie mov: result.getResults()) {
+            mMovieGridAdapter.add(mov);
         }
     }
 
